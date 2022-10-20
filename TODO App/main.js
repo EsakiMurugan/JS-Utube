@@ -31,26 +31,35 @@ else{
     
 }}
 
-let data = {}
+let data = []
 
 let acceptData = () => {
-    data["text"] = textinput.value
-    data["date"] = dateinput.value
-    data["desc"] = textarea.value
+    data.push({
+        text: textinput.value,
+        date: dateinput.value,
+        desc: textarea.value,
+    })
+
+    localStorage.setItem("data",JSON.stringify(data))
+    console.log(data)
     createTasks()
 }
 
 let createTasks = () => {
-tasks.innerHTML += 
-`<div>
-<span class = "fw-bold">${data.text}</span>
-<span class="small text-secondary">${data.date}</span>
-<p>${data.desc}</p>
-<span class="options">
-    <i onClick = "updateTask(this)" data-bs-toggle="modal" data-bs-target="#form" class = " fas fa-edit"></i>
-    <i onClick = "deleteTask(this)" class = "fas fa-trash-alt"></i>
-</span>
-</div>`
+    tasks.innerHTML = ""
+    data.map((x,y) => {
+        return (tasks.innerHTML += 
+        `<div id=${y}>
+        <span class = "fw-bold">${x.text}</span>
+        <span class="small text-secondary">${x.date}</span>
+        <p>${x.desc}</p>
+        <span class="options">
+            <i onClick = "updateTask(this)" data-bs-toggle="modal" data-bs-target="#form" class = " fas fa-edit"></i>
+            <i onClick = "deleteTask(this)" class = "fas fa-trash-alt"></i>
+        </span>
+        </div>`)
+    })
+
 resetForm()
 }
 
@@ -62,6 +71,9 @@ let resetForm = () => {
 
 let deleteTask = (e) => {
     e.parentElement.parentElement.remove()
+    data.splice(e.parentElement.parentElement.id,1)
+    localStorage.setItem("data",JSON.stringify(data))
+    console.log(data)
 }
 
 let updateTask = (e) => {
@@ -72,5 +84,12 @@ let updateTask = (e) => {
     dateinput.value = thaiElement.children[1].innerHTML
     textarea.value = thaiElement.children[2].innerHTML
 
-    thaiElement.remove()
+    deleteTask(e)
+
 }
+
+(() => {
+    data = JSON.parse(localStorage.getItem("data")) || []
+    console.log(data)  
+    createTasks()
+})()
