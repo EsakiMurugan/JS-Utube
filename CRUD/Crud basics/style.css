@@ -1,0 +1,33 @@
+body{
+    font-family:sans-serif;
+    background-color:burlywood
+}
+
+.container{
+    max-width: 800px;
+    border : 2px solid black;
+    padding : 10px 20px;
+    display: flex;
+    gap:50px;
+    background-color: #fff;
+}
+
+.message{
+    color:red;
+}
+
+#posts{
+    width:400px;
+}
+
+#posts div{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.contains{
+    display: flex;
+    gap:10px;
+    cursor: pointer;
+}
